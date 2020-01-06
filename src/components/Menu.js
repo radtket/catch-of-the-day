@@ -15,7 +15,7 @@ const Menu = ({ fishes, addToOrder }) => {
                 ...value,
                 key,
                 onClick: () => addToOrder(key),
-                isAvailable: value.status === "available",
+                isAvailable: value && value.status === "available",
               }}
             />
           );
