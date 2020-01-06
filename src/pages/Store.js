@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import sampleFishes from "../utils/data/sample-fishes";
 import Menu from "../components/Menu";
+import Order from "../components/Order";
 
 const Store = () => {
   const [state, setState] = useState({
@@ -22,10 +23,23 @@ const Store = () => {
     });
   };
 
+  const removeFromOrder = key => {
+    setState(prev => {
+      const order = { ...prev.order };
+      // remove that itemf from order
+      delete order[key];
+
+      return {
+        ...prev,
+        order,
+      };
+    });
+  };
+
   return (
     <div className="catch-of-the-day">
       <Menu {...{ ...state, addToOrder }} />
-      <h1>Store</h1>
+      <Order {...{ ...state, removeFromOrder }} />
     </div>
   );
 };

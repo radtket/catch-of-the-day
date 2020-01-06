@@ -8,14 +8,18 @@ const Menu = ({ fishes, addToOrder }) => {
     <div className="menu">
       <Header tagline="Fresh Seafood Market" />
       <ul className="fishes">
-        {Object.keys(fishes).map(key => (
-          <Fish
-            key={key}
-            {...{ addToOrder }}
-            details={fishes[key]}
-            index={key}
-          />
-        ))}
+        {Object.entries(fishes).map(([key, value]) => {
+          return (
+            <Fish
+              {...{
+                ...value,
+                key,
+                onClick: () => addToOrder(key),
+                isAvailable: value.status === "available",
+              }}
+            />
+          );
+        })}
       </ul>
     </div>
   );

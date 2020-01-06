@@ -2,9 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { formatPrice } from "../utils/helpers";
 
-const Fish = ({ details, addToOrder, index }) => {
-  const { image, name, price, desc, status } = details;
-  const isAvailable = status === "available";
+const Fish = ({ image, name, price, desc, isAvailable, onClick }) => {
   return (
     <li className="menu-fish">
       <img alt={name} src={image} />
@@ -13,11 +11,7 @@ const Fish = ({ details, addToOrder, index }) => {
         <span className="price">{formatPrice(price)}</span>
       </h3>
       <p>{desc}</p>
-      <button
-        disabled={!isAvailable}
-        onClick={() => addToOrder(index)}
-        type="button"
-      >
+      <button disabled={!isAvailable} {...{ onClick }} type="button">
         {isAvailable ? "Add To Order" : "Sold Out!"}
       </button>
     </li>
@@ -25,15 +19,13 @@ const Fish = ({ details, addToOrder, index }) => {
 };
 
 Fish.propTypes = {
-  details: PropTypes.shape({
-    image: PropTypes.string,
-    name: PropTypes.string,
-    desc: PropTypes.string,
-    status: PropTypes.string,
-    price: PropTypes.number,
-  }),
-  addToOrder: PropTypes.func,
-  index: PropTypes.string,
+  image: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  desc: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  isAvailable: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default Fish;
