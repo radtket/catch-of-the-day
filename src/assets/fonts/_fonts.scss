@@ -1,0 +1,27 @@
+$url-font-haymaker_0: url(./haymaker-webfont.eot);
+$url-font-haymaker_1: url(./haymaker-webfont.eot?#iefix);
+$url-font-haymaker_2: url(./haymaker-webfont.woff);
+$url-font-haymaker_3: url(./haymaker-webfont.ttf);
+$url-font-haymaker_4: url(./haymaker-webfont.svg#haymakerregular);
+
+$url-font-blanch_5: url(./blanch_caps_inline-webfont.eot);
+$url-font-blanch_6: url(./blanch_caps_inline-webfont.eot?#iefix);
+$url-font-blanch_7: url(./blanch_caps_inline-webfont.woff);
+$url-font-blanch_8: url(./blanch_caps_inline-webfont.ttf);
+$url-font-blanch_9: url(./blanch_caps_inline-webfont.svg#blanchcaps_inline);
+
+@font-face {
+  font-family: $font-haymaker;
+  src: $url-font-haymaker_0;
+  src: $url-font-haymaker_1 format("embedded-opentype"), $url-font-haymaker_2 format("woff"), $url-font-haymaker_3 format("truetype"), $url-font-haymaker_4 format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: $font-blanch;
+  src: $url-font-blanch_5;
+  src: $url-font-blanch_6 format('embedded-opentype'), $url-font-blanch_7 format('woff'), $url-font-blanch_8 format('truetype'), $url-font-blanch_9 format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
