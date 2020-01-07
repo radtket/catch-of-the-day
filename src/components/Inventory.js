@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable camelcase */
+import React, { useState, useEffect } from "react";
 import firebase from "firebase";
 import PropTypes from "prop-types";
 import { useRouteMatch } from "react-router-dom";
@@ -9,64 +10,58 @@ import LogoutButton from "./LogoutButton";
 import Login from "./Login";
 import { base, firebaseApp } from "../base";
 
-const Inventory = ({ fishes, setState }) => {
+const Inventory = ({ fishes, setFishes }) => {
   const {
     params: { storeId },
   } = useRouteMatch();
 
-  const [auth, setAuth] = useState({
-    uid: null,
-    owner: null,
-  });
+  const [uid, setUid] = useState(null);
+  const [owner, setOwner] = useState(null);
 
-  const authHandler = async authData => {
-    // 1 .Look up the current store in the firebase database
-    const store = await base.fetch(storeId, { context: this });
-    console.log({ store });
-
-    // 2. Claim it if there is no owner
+  const authHandler = async (authData, store_id) => {
+    const store = await base.fetch(store_id, {});
     if (!store.owner) {
-      // save it as our own
-      await base.post(`${storeId}/owner`, {
-        data: authData.user.uid,
-      });
+      await base.post(`${store_id}/owner`, { data: authData.user.uid });
     }
-    // 3. Set the state of the inventory component to reflect the current user
-    setAuth({
-      uid: authData.user.uid,
-      owner: store.owner || authData.user.uid,
-    });
+    setUid(authData.user.uid);
+    setOwner(store.owner || authData.user.uid);
   };
 
-  const logout = async () => {
-    console.log("Logging out!");
-    await firebase.auth().signOut();
-    setAuth(prev => ({ ...prev, uid: null }));
+  const authenticate = (store_id, provider) => {
+    const authProvider = new firebase.auth[`${provider}AuthProvider`]();
+    firebaseApp
+      .auth()
+      .signInWithPopup(authProvider)
+      .then(data => authHandler(data, store_id));
   };
+
+  useEffect(() => {
+    console.log("firebase.auth");
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        authHandler({ user }, storeId);
+      }
+    });
+  }, [storeId]);
 
   const loadSampleFishes = () => {
-    setState(prev => ({
+    setFishes(prev => ({
       ...prev,
-      fishes: sampleFishes,
+      sampleFishes,
     }));
   };
 
-  if (!auth.uid) {
-    return (
-      <Login
-        authenticate={provider => {
-          const authProvider = new firebase.auth[`${provider}AuthProvider`]();
-          firebaseApp
-            .auth()
-            .signInWithPopup(authProvider)
-            .then(authHandler);
-        }}
-      />
-    );
+  const logout = async () => {
+    await firebase.auth().signOut();
+    setUid(null);
+  };
+
+  if (!uid) {
+    return <Login authenticate={provider => authenticate(storeId, provider)} />;
   }
 
   // 2. check if they are not the owner of the store
-  if (auth.uid !== auth.owner) {
+  if (uid !== owner) {
     return (
       <div>
         <p>Sorry you are not the owner!</p>
@@ -86,12 +81,12 @@ const Inventory = ({ fishes, setState }) => {
               index: key,
               fish,
               key,
-              setState,
+              setFishes,
             }}
           />
         );
       })}
-      <AddFishForm {...{ setState }} />
+      <AddFishForm {...{ setFishes }} />
       <button onClick={loadSampleFishes} type="button">
         Load Sample Fishes
       </button>
@@ -101,7 +96,7 @@ const Inventory = ({ fishes, setState }) => {
 
 Inventory.propTypes = {
   fishes: PropTypes.objectOf(PropTypes.object).isRequired,
-  setState: PropTypes.func.isRequired,
+  setFishes: PropTypes.func.isRequired,
 };
 
 export default Inventory;

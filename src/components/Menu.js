@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import Header from "./Header";
 import Fish from "./Fish";
 
-const Menu = ({ fishes, setState }) => {
+const Menu = ({ fishes, setOrder }) => {
   const addToOrder = key => {
-    setState(prev => {
-      const order = { ...prev.order };
+    setOrder(prev => {
+      const order = { ...prev };
       // Either add to the order, or update the number in our order
       order[key] = order[key] + 1 || 1;
 
@@ -40,7 +40,7 @@ const Menu = ({ fishes, setState }) => {
 
 Menu.propTypes = {
   fishes: PropTypes.objectOf(PropTypes.object).isRequired,
-  setState: PropTypes.func.isRequired,
+  setOrder: PropTypes.func.isRequired,
 };
 
 export default Menu;

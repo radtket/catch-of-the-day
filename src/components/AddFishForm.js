@@ -2,20 +2,14 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { blankFish } from "../utils/constants";
 
-const AddFishForm = ({ setState }) => {
+const AddFishForm = ({ setFishes }) => {
   const [values, setValues] = useState({
     ...blankFish,
   });
 
-  const addFish = newFish =>
-    setState(prev => {
-      const copy = { ...prev };
-
-      // Add our new fish to that fishes variable
-      copy.fishes[`fish${Date.now()}`] = newFish;
-
-      return copy;
-    });
+  const addFish = fish => {
+    setFishes(prev => ({ ...prev, [`fish${Date.now()}`]: fish }));
+  };
 
   const onChange = ({ target: { name, value } }) => {
     setValues(prev => ({
@@ -76,7 +70,7 @@ const AddFishForm = ({ setState }) => {
 };
 
 AddFishForm.propTypes = {
-  setState: PropTypes.func.isRequired,
+  setFishes: PropTypes.func.isRequired,
 };
 
 export default AddFishForm;

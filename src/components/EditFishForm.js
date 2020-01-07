@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const EditFishForm = ({ fish, index, setState }) => {
+const EditFishForm = ({ fish, index, setFishes }) => {
   const [values, setValues] = useState({ ...fish });
 
   const updateFish = (key, updatedFish) => {
-    setState(prev => {
+    setFishes(prev => {
       const copy = { ...prev };
-      copy.fishes[key] = updatedFish;
+      copy[key] = updatedFish;
       return copy;
     });
   };
 
   const deleteFish = () => {
-    setState(prev => {
+    setFishes(prev => {
       const copy = { ...prev };
-      delete copy.fishes[index];
+      delete copy[index];
       return copy;
     });
   };
@@ -57,7 +57,7 @@ EditFishForm.propTypes = {
     onClick: PropTypes.func,
   }).isRequired,
   index: PropTypes.string.isRequired,
-  setState: PropTypes.func.isRequired,
+  setFishes: PropTypes.func.isRequired,
 };
 
 export default EditFishForm;

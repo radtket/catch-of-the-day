@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { formatPrice } from "../utils/helpers";
 
-const Order = ({ fishes, order, setState }) => {
+const Order = ({ fishes, order, setOrder }) => {
   const removeFromOrder = key => {
-    setState(prev => {
+    setOrder(prev => {
       const copy = { ...prev };
       // remove that itemf from order
-      delete copy.order[key];
+      delete copy[key];
       return copy;
     });
   };
@@ -84,8 +84,9 @@ const Order = ({ fishes, order, setState }) => {
 
 Order.propTypes = {
   fishes: PropTypes.objectOf(PropTypes.object).isRequired,
-  order: PropTypes.objectOf(PropTypes.object).isRequired,
-  setState: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  order: PropTypes.object.isRequired,
+  setOrder: PropTypes.func.isRequired,
 };
 
 export default Order;
