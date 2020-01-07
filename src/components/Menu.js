@@ -3,7 +3,20 @@ import PropTypes from "prop-types";
 import Header from "./Header";
 import Fish from "./Fish";
 
-const Menu = ({ fishes, addToOrder }) => {
+const Menu = ({ fishes, setState }) => {
+  const addToOrder = key => {
+    setState(prev => {
+      const order = { ...prev.order };
+      // Either add to the order, or update the number in our order
+      order[key] = order[key] + 1 || 1;
+
+      return {
+        ...prev,
+        order,
+      };
+    });
+  };
+
   return (
     <div className="menu">
       <Header tagline="Fresh Seafood Market" />
@@ -26,16 +39,8 @@ const Menu = ({ fishes, addToOrder }) => {
 };
 
 Menu.propTypes = {
-  // fishes: PropTypes.objectOf(
-  //   PropTypes.shape({
-  //     name: PropTypes.string,
-  //     image: PropTypes.string,
-  //     desc: PropTypes.string,
-  //     price: 1724,
-  //     status: PropTypes.string,
-  //   })
-  // ).isRequired,
-  addToOrder: PropTypes.func.isRequired,
+  fishes: PropTypes.objectOf(PropTypes.object).isRequired,
+  setState: PropTypes.func.isRequired,
 };
 
 export default Menu;

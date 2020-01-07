@@ -3,13 +3,23 @@ import PropTypes from "prop-types";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { formatPrice } from "../utils/helpers";
 
-const Order = ({ fishes, order, removeFromOrder }) => {
+const Order = ({ fishes, order, setState }) => {
+  const removeFromOrder = key => {
+    setState(prev => {
+      const copy = { ...prev };
+      // remove that itemf from order
+      delete copy.order[key];
+      return copy;
+    });
+  };
+
   const total = Object.entries(order).reduce((prevTotal, [key, count]) => {
     const fish = fishes[key];
 
     if (fish && fish.status === "available") {
       return prevTotal + count * fish.price;
     }
+
     return prevTotal;
   }, 0);
 
@@ -73,9 +83,9 @@ const Order = ({ fishes, order, removeFromOrder }) => {
 };
 
 Order.propTypes = {
-  fishes: PropTypes.object,
-  order: PropTypes.object,
-  removeFromOrder: PropTypes.func,
+  fishes: PropTypes.objectOf(PropTypes.object).isRequired,
+  order: PropTypes.objectOf(PropTypes.object).isRequired,
+  setState: PropTypes.func.isRequired,
 };
 
 export default Order;

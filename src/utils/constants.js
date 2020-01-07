@@ -1,3 +1,11 @@
+export const blankFish = {
+  name: "",
+  price: "",
+  status: "",
+  desc: "",
+  image: "",
+};
+
 export const adjectives = [
   "adorable",
   "beautiful",

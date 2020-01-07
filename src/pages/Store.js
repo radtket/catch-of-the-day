@@ -11,36 +11,10 @@ const Store = () => {
     order: {},
   });
 
-  const addToOrder = key => {
-    setState(prev => {
-      const order = { ...prev.order };
-      // Either add to the order, or update the number in our order
-      order[key] = order[key] + 1 || 1;
-
-      return {
-        ...prev,
-        order,
-      };
-    });
-  };
-
-  const removeFromOrder = key => {
-    setState(prev => {
-      const order = { ...prev.order };
-      // remove that itemf from order
-      delete order[key];
-
-      return {
-        ...prev,
-        order,
-      };
-    });
-  };
-
   return (
     <div className="catch-of-the-day">
-      <Menu {...{ ...state, addToOrder }} />
-      <Order {...{ ...state, removeFromOrder }} />
+      <Menu {...{ ...state, setState }} />
+      <Order {...{ ...state, setState }} />
       <Inventory {...{ ...state, setState }} />
     </div>
   );

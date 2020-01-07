@@ -44,17 +44,6 @@ const Inventory = ({ fishes, setState }) => {
     setAuth(prev => ({ ...prev, uid: null }));
   };
 
-  const addFish = fish => {
-    setState(prev => {
-      const copy = { ...prev };
-
-      // Add our new fish to that fishes variable
-      copy.fishes[`fish${Date.now()}`] = fish;
-
-      return copy;
-    });
-  };
-
   const loadSampleFishes = () => {
     setState(prev => ({
       ...prev,
@@ -102,7 +91,7 @@ const Inventory = ({ fishes, setState }) => {
           />
         );
       })}
-      <AddFishForm {...{ addFish }} />
+      <AddFishForm {...{ setState }} />
       <button onClick={loadSampleFishes} type="button">
         Load Sample Fishes
       </button>
@@ -111,6 +100,7 @@ const Inventory = ({ fishes, setState }) => {
 };
 
 Inventory.propTypes = {
+  fishes: PropTypes.objectOf(PropTypes.object).isRequired,
   setState: PropTypes.func.isRequired,
 };
 
